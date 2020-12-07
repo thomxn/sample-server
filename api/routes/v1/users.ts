@@ -8,7 +8,6 @@ const userRouter = Router({
 })
 
 userRouter.post('/users', userCreateValidator, userController.createUser)
-userRouter.post('/users/bulk', userController.bulkUsers)
 
 
 export default userRouter
