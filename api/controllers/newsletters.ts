@@ -11,7 +11,7 @@ const sendBulkNewsletters = async (req: Request, res: Response) => {
     logger.info(req.headers)
     await uploadFile(req, res)
 
-    let newsletter : any= []
+    let newsletter;
 
     const data = await csvtojson({
       noheader: true,
