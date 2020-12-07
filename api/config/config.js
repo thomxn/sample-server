@@ -8,7 +8,7 @@ module.exports = {
   password: String(process.env.DB_PASSWORD),
   database: String(process.env.DB_NAME),
   port: parseInt(process.env.DB_PORT, 10),
-  dialect: String('postgres'),
+  dialect: String('mysql'),
   host: String(process.env.DB_HOST),
   pool: {
     max: 10,

@@ -14,7 +14,7 @@ const sequelize = new Sequelize.Sequelize(
   config.password,
   {
     host: config.host,
-    dialect: 'postgres',
+    dialect: 'mysql',
     pool: config.pool,
     logQueryParameters: env === 'development',
     logging: (query, time) => {

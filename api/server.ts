@@ -5,6 +5,8 @@ import dotenv from 'dotenv'
 import routes from './routes'
 
 import logger from './utils/logger'
+import {consumeNewsletterQueue, consumeRetryNewsletterQueue} from './utils/message_broker/consumer'
+import startJob from './utils/cronjob'
 
 // Load .ENV contants to process.env
 dotenv.config()
@@ -27,6 +29,11 @@ try {
   app.listen(PORT, () => {
     logger.info(`\n\nServer is running on port ${PORT}\n`)
   })
+
+  // Poll every 5 sec
+  startJob('*/5 * * * * *', consumeNewsletterQueue)
+  startJob('*/5 * * * * *', consumeRetryNewsletterQueue)
+  
 } catch (err) {
   console.log(err)
 }

@@ -1,11 +1,25 @@
 import { Request, Response } from 'express'
 import logger from '../utils/logger'
 import userService from '../services/users'
+import csvtojson from 'csvtojson'
+import {
+  validationResult
+} from 'express-validator';
 
-const getUsers = async (req: Request, res: Response) => {
+import {publishNewsletterQueue} from '../utils/message_broker/init'
+import {uploadFile} from '../utils/files'
+
+const createUser = async (req: Request, res: Response) => {
   try {
-    logger.info(req.headers)
-    const response = await userService.getUsers()
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send
+        (errors.mapped());
+    }
+
+    const response = await userService.createUser(req.body)
+
+    publishNewsletterQueue(JSON.stringify(req.body))
 
     logger.info(response)
 
@@ -16,14 +30,33 @@ const getUsers = async (req: Request, res: Response) => {
   }
 }
 
-const createUser = async (req: Request, res: Response) => {
+const bulkUsers = async (req: Request, res: Response) => {
   try {
     logger.info(req.headers)
-    const response = await userService.createUser(req.body)
+    await uploadFile(req, res)
 
-    logger.info(response)
+    let newsletter : any= []
 
-    return res.status(200).send(response)
+    const data = await csvtojson({
+      noheader: true,
+      output: 'json',
+      delimiter: ','
+    }).
+    fromString(req.file.buffer.toString())
+
+    data.forEach(row => {
+      const elements = row['field1'].split(';')
+      newsletter = {
+        email: elements[0],
+        nw_content: elements[1],
+        nw_name:elements[2]
+      }
+      publishNewsletterQueue(JSON.stringify(newsletter))
+
+    });
+
+
+    return res.status(204).send()
   } catch (err) {
     logger.error(err)
     return res.status(500).send(err)
@@ -31,6 +64,6 @@ const createUser = async (req: Request, res: Response) => {
 }
 
 export default {
-  getUsers,
-  createUser
+  createUser,
+  bulkUsers
 }
