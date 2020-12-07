@@ -1,0 +1,7 @@
+{
+    "watch": ["api"],
+    "ext": "ts",
+    "ignore": ["api/**/*.spec.ts"],
+    "exec": "DOTENV_CONFIG_PATH=.env ts-node -r dotenv/config ./api/server.ts"
+  }
+  

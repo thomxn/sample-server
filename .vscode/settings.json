@@ -1,0 +1,33 @@
+{
+  "window.zoomLevel": 0,
+  "javascript.validate.enable": false,
+  // Prevents VS Code from formatting JavaScript with the default linter
+  "javascript.format.enable": false,
+
+  // Prevents VS Code linting JavaScript with the default linter
+
+  // Lints with Standard JS
+  "standard.enable": true,
+
+  // Format files with Standard whenever you save the file
+  "standard.autoFixOnSave": true,
+
+  // Files to validate with Standard JS
+  "standard.validate": ["javascript", "typescript"],
+  "standard.engine": "standardx",
+  "standard.usePackageJson": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode"
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Night Wolf [dark blue] (No Italics)",
+  "files.associations": {
+    "*.proto": "c"
+  }
+}
